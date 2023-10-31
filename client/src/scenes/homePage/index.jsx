@@ -11,7 +11,8 @@ import { setUserPage } from "state";
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
-  useDispatch()(setUserPage({userPage: _id}))
+  const dispatch = useDispatch()
+  dispatch(setUserPage({userPage: _id}))
   return (
     <Box>
       <Navbar />

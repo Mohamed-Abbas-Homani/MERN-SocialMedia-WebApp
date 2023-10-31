@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import { useCallback, useState } from "react";
 
 
 const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=true }) => {
@@ -13,6 +14,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
   const {_id} = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
+  const myFriends =  useSelector((state) => state.user.friends);
   const userPage = useSelector(state => state.userPage)
 
   const { palette } = useTheme();
@@ -20,10 +22,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-
-  const isFriend = friends.find((friend) => friend._id === friendId);
-
-  const patchFriend = async () => {
+  const [isFriend, setIsFriend] = useState(myFriends.find(friend => friend._id === friendId))
+  
+  const patchFriend =  useCallback(async () => {
     const response = await fetch(
       `http://localhost:3001/users/${userPage}/${userPage === _id ? friendId : _id}`,
       {
@@ -36,7 +37,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
-  };
+  }, [_id, userPage, friendId, dispatch, token]);
+
+
 
   return (
     <FlexBetween>
@@ -66,9 +69,10 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
           </Typography>
         </Box>
       </FlexBetween>
-      { _id !== friendId && <IconButton
+      { _id !== friendId && (inPost || userPage === _id) && <IconButton
         onClick={() => {
           patchFriend();
+          setIsFriend(!isFriend)
         }}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
