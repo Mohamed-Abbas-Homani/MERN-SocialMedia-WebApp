@@ -1,18 +1,19 @@
 import { Box, useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector'
-import { useParams, useSearchParams } from 'react-router-dom'
-import WidgetWrapper from 'components/WidgetWrapper'
+import { useSelector } from 'react-redux/es/hooks/useSelector'
+import { useParams } from 'react-router-dom'
 import Navbar from 'scenes/navBar'
 import MyPostWidget from 'scenes/widgets/MyPostWidget'
 import PostsWidget from 'scenes/widgets/PostsWidget'
 import FriendListWidget from 'scenes/widgets/FriendListWidget'
 import UserWidget from 'scenes/widgets/UserWidget'
-
+import { useDispatch } from 'react-redux'
+import { setUserPage } from 'state'
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
+  useDispatch()(setUserPage({userPage: userId}))
   const {picturePath} = useSelector(state => state.user)
   const token = useSelector(state => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
