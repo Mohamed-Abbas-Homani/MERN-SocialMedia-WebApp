@@ -11,6 +11,8 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost, setPosts } from "state";
+import SearchTag from "components/SearchTag";
+
 
 const PostWidget = ({
   isProfile,
@@ -30,7 +32,6 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
@@ -70,7 +71,8 @@ const PostWidget = ({
         
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
+        <SearchTag description={description} token={token}/>
+      
       </Typography>
       { picturePath &&(
         <img

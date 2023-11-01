@@ -13,6 +13,7 @@ export const getUser = async (req, res) => {
 
 export const getUserFriends = async (req, res) => {
   try {
+    console.log("jffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffo")
     const { id } = req.params;
     const user = await User.findById(id);
 
@@ -61,3 +62,28 @@ export const addRemoveFriend = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+
+export const tagUser = async (req, res) => {
+  try {
+    const {wordAfter} = req.params
+    User.findOne({
+      $expr: {
+        $eq: [
+          { $concat: ["$firstName", "$lastName"] },
+          wordAfter
+        ]
+      }
+    }, (err, user) => {
+       if (!user) {
+        res.status(200).json({"tId": null})
+      } else {
+        res.status(200).json({"tId": user._id})
+      }
+    });
+    
+  } catch (err)
+  {
+    res.status(404).json({ message: err.message });
+  }
+}
