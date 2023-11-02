@@ -22,7 +22,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-  const [isFriend, setIsFriend] = useState(myFriends.find(friend => friend._id === friendId))
+  const [isFriend, setIsFriend] = useState(Boolean(myFriends.find(friend => friend._id === friendId)))
   
   const patchFriend =  useCallback(async () => {
     const response = await fetch(
@@ -34,9 +34,13 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
           "Content-Type": "application/json",
         },
       }
+      
     );
     const data = await response.json();
+    console.log(data)
     dispatch(setFriends({ friends: data }));
+   
+    console.log(isFriend)
   }, [_id, userPage, friendId, dispatch, token]);
 
 
