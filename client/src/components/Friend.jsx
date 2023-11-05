@@ -8,7 +8,7 @@ import UserImage from "./UserImage";
 import { useCallback, useState } from "react";
 
 
-const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=true }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=true, inComment, deleteComment, ps="55px" }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {_id} = useSelector((state) => state.user);
@@ -48,7 +48,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
+        <UserImage image={userPicturePath} size={ps} />
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
@@ -89,6 +89,15 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
       { _id === friendId && inPost && <IconButton
         onClick={() => {
           deletePost();
+        }}
+        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+      >
+        <DeleteOutlineOutlined />
+      </IconButton>}
+      
+      { _id === friendId && inComment && <IconButton
+        onClick={() => {
+          deleteComment();
         }}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
