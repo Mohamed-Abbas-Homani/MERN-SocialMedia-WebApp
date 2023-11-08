@@ -38,7 +38,6 @@ export const getPostComments = async (req, res) => {
   try {
     const {postId} = req.params;
     const comments = await Comment.find({postId});
-    console.log(comments)
     res.status(200).json(comments);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -50,7 +49,6 @@ export const likeComment = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
-    console.log(id + userId)
     const comment = await Comment.findById(id);
     const isLiked = comment.likes.get(userId);
 
@@ -81,16 +79,12 @@ export const deleteComment = async (req, res) => {
     
     if (!deletedComment)
       res.status(400).json({"message": "comment not found"})
-  
-    // const post = Post.findById(postId);
-  
-    // res.status(200).json(post.comments);
+
     const post = await Post.findById(postId).populate("comments")
     post.comments = post.comments.filter(c => c._id != id)  
     await post.save()
  
     const comments = await Comment.find({postId})
-    console.log(comments)
       res.status(200).json(comments)
 
   } catch (err) {

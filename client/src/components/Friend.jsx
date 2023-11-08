@@ -37,10 +37,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, deletePost, inPost=
       
     );
     const data = await response.json();
-    console.log(data)
     dispatch(setFriends({ friends: data }));
-   
-    console.log(isFriend)
   }, [_id, userPage, friendId, dispatch, token]);
 
 

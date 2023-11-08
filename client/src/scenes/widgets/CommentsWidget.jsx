@@ -52,7 +52,6 @@ const CommentsWidget = ({postId , Icomments}) => {
       }
     )
     const data = await response.json();
-    console.log(data)
     setComments(data);
     setBody("")
   }
@@ -155,7 +154,6 @@ const CommentsWidget = ({postId , Icomments}) => {
       </Typography>
       <FlexBetween gap="0.3rem">
             <IconButton onClick={() => patchLikeComment(comment._id)}>
-              {console.log(comment.likes)}
               {Boolean(comment.likes[commenter._id]) ? (
                 <FavoriteOutlined sx={{ color: palette.primary.main }} />
               ) : (
